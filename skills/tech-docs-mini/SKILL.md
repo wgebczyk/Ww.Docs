@@ -7,14 +7,12 @@ description: >
   strategy: curated docs define intent, generated docs summarize structure, source
   code verification establishes actual behavior.
 allowed-tools:
-  - readFile
-  - createFile
-  - writeFile
-  - search
-  - fileSearch
-  - 'shell:git'
-  - 'shell:Get-ChildItem'
-  - 'shell:New-Item'
+  - Read
+  - Write
+  - Edit
+  - Glob
+  - Grep
+  - Bash
 ---
 
 # TechDocs-Mini Skill
