@@ -2,9 +2,12 @@
 name: tech-docs
 description: >
   Use this skill when the user asks to generate or refresh codebase knowledge docs,
-  update the wiki, run a mismatch report, or invoke /tech-docs. Follows a hybrid
-  strategy: curated docs define intent, generated docs summarize structure, source
-  code verification establishes actual behavior.
+  document a codebase, build or update a wiki, find undocumented modules, run a
+  doc-code mismatch report, or invokes /tech-docs. Multi-repository variant: the
+  workspace is a docs repo with one or more sibling code repos checked out as
+  first-level child directories (docs live OUTSIDE the documented repos). Use
+  tech-docs-mini instead when scanning a single repository where docs live INSIDE
+  the repo (docs/tech-docs/ alongside the code).
 allowed-tools:
   - Read
   - Write
@@ -25,7 +28,11 @@ is the only proof of actual behavior.
 
 **RULE:** Curated docs define intent. Generated docs summarize observed structure. Source code proves actual behavior — never assert how code works without verified evidence.
 
-**CONSTRAINT [HARD]:** Every substantive technical claim requires a source citation — file path and, where localized, line range. Never propagate curated intent as verified fact.
+Constraints in this skill are tagged by category:
+- `[HARD-EVIDENCE]` — source-citation and verification rules; a violation produces an unfounded claim about how code works.
+- `[HARD-WRITE]` — file-write policy; a violation corrupts or overwrites human-owned or append-only artefacts.
+
+**CONSTRAINT [HARD-EVIDENCE]:** Every substantive technical claim requires a source citation — file path and, where localized, line range. Never propagate curated intent as verified fact.
 
 ## Mode Detection
 
@@ -109,7 +116,7 @@ write both citations and flag the conflict:
 [CONFLICT: repo-a/file.cs says X; repo-b/other.ts says Y]
 ```
 
-**CONSTRAINT [HARD]:** Never make unsourced claims about how the code works.
+**CONSTRAINT [HARD-EVIDENCE]:** Never make unsourced claims about how the code works.
 
 ## Curated Docs Integration
 
@@ -143,7 +150,7 @@ When answering analysis prompts with this skill:
 6. Answer based on verified code behavior.
 7. Call out mismatches, uncertainty, and suggested doc updates.
 
-**CONSTRAINT [HARD]:** For security, data handling, authorization, financial logic,
+**CONSTRAINT [HARD-EVIDENCE]:** For security, data handling, authorization, financial logic,
 compliance, and other high-risk topics, source verification is mandatory before
 final conclusions. Never propagate curated intent as verified fact.
 
@@ -180,7 +187,7 @@ For **Update** runs:
 - Mismatches flagged: {N}
 ```
 
-**CONSTRAINT [HARD]:** Never rewrite or truncate `log.md` — only append. Do not embed
+**CONSTRAINT [HARD-WRITE]:** Never rewrite or truncate `log.md` — only append. Do not embed
 this history in `index.md` or any wiki page. `log.md` is excluded from template and
 citation requirements.
 

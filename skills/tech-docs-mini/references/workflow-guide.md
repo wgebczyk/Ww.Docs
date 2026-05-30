@@ -4,7 +4,7 @@ Full procedural workflow for the hybrid knowledge strategy.
 
 **RULE:** Curated docs define intent. Generated docs summarize structure. Source code proves behavior.
 
-**CONSTRAINT [HARD]:** Generated pages are orientation artifacts only. For security, data handling, authorization, financial logic, and other high-risk topics, verify against current source code every run before drawing conclusions.
+**CONSTRAINT [HARD-EVIDENCE]:** Generated pages are orientation artifacts only. For security, data handling, authorization, financial logic, and other high-risk topics, verify against current source code every run before drawing conclusions.
 
 ---
 

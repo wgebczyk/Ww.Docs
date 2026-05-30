@@ -2,14 +2,13 @@
 name: craft-docs-mini
 description: >
   Use this skill when the user asks to generate or refresh code craftsmanship docs,
-  recover design information, audit architecture adherence, audit SOLID alignment,
-  audit clean-code adherence, audit testability, or invokes /craft-docs-mini. Single-
-  repository variant of craft-docs: scans the current folder and below (repo root).
-  Follows a hybrid strategy: curated docs declare intended design and rationale
-  (including ADRs and architecture-style declarations); generated docs recover observed
-  design and produce a prioritized Critical/Major/Minor findings report across
-  Architecture → SOLID → Clean Code → Testability; source code proves actual
-  behavior and structure.
+  recover observed design, audit architecture adherence, audit SOLID alignment,
+  audit clean-code adherence, or audit testability, or invokes /craft-docs-mini.
+  Produces a prioritized Critical/Major/Minor findings report across
+  Architecture → SOLID → Clean Code → Testability. Single-repository variant: the
+  current working directory IS the repository and docs live INSIDE it
+  (docs/craft-docs/ alongside the code). Use craft-docs instead when the workspace
+  is a docs repo with sibling code repos checked out as first-level child directories.
 allowed-tools:
   - Read
   - Write
@@ -32,7 +31,12 @@ recover observed design and findings; source code is the only proof.
 
 **RULE:** Curated docs declare intent. Generated docs recover observed design and grade craft alignment in fixed order: Architecture → SOLID → Clean Code → Testability. Source code is the only proof.
 
-**CONSTRAINT [HARD]:** Every finding requires a source citation — file path plus line range when the finding is localized. Never assert a violation without one.
+Constraints in this skill are tagged by category:
+- `[HARD-EVIDENCE]` — source-citation and verification rules; a violation produces an unfounded finding.
+- `[HARD-WRITE]` — file-write policy; a violation corrupts or overwrites human-owned or append-only artefacts.
+- `[HARD-FORMAT]` — output structure rules; a violation produces malformed or misclassified findings.
+
+**CONSTRAINT [HARD-EVIDENCE]:** Every finding requires a source citation — file path plus line range when the finding is localized. Never assert a violation without one.
 
 ## Analysis Order (fixed)
 
@@ -209,7 +213,7 @@ Verification Checklist), append one entry to
 `docs/craft-docs/log.md`. See `references/workflow-guide.md`
 for the exact entry format.
 
-Never rewrite or truncate `log.md` — only append. Do not embed this
+**CONSTRAINT [HARD-WRITE]:** Never rewrite or truncate `log.md` — only append. Do not embed this
 history in `index.md` or any wiki page.
 
 ## Verification Checklist

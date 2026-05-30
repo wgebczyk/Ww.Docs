@@ -2,7 +2,7 @@
 
 SOLID is the **second** analysis pass. Apply after Architecture. Skip any finding whose root cause was already filed as an Architecture violation.
 
-**CONSTRAINT [HARD]:** Every finding uses the per-finding structure from `output-format.md` with `Aspect: SOLID` and `Rule:` exactly one of `SRP | OCP | LSP | ISP | DIP`.
+**CONSTRAINT [HARD-FORMAT]:** Every finding uses the per-finding structure from `output-format.md` with `Aspect: SOLID` and `Rule:` exactly one of `SRP | OCP | LSP | ISP | DIP`.
 
 ---
 

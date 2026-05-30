@@ -2,9 +2,9 @@
 
 Clean Code is the **third** analysis pass. Apply after Architecture and SOLID. Skip any finding whose root cause was already filed in an earlier pass.
 
-**CONSTRAINT [HARD]:** Every finding uses the per-finding structure from `output-format.md` with `Aspect: CleanCode` and `Rule:` verbatim from the rule headings below.
+**CONSTRAINT [HARD-FORMAT]:** Every finding uses the per-finding structure from `output-format.md` with `Aspect: CleanCode` and `Rule:` verbatim from the rule headings below.
 
-**CONSTRAINT [HARD]:** Do NOT file `Boundary Leak` here — it belongs to `aspects/architecture.md`.
+**CONSTRAINT [HARD-FORMAT]:** Do NOT file `Boundary Leak` here — it belongs to `aspects/architecture.md`.
 
 ---
 

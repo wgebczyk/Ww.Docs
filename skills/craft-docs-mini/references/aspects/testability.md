@@ -2,7 +2,7 @@
 
 Testability is the **fourth** analysis pass. Apply after Architecture, SOLID, and Clean Code. File only findings whose root cause is not already covered by an earlier pass.
 
-**CONSTRAINT [HARD]:** Every finding uses the per-finding structure from `output-format.md` with `Aspect: Testability` and `Rule:` verbatim from the rule headings below.
+**CONSTRAINT [HARD-FORMAT]:** Every finding uses the per-finding structure from `output-format.md` with `Aspect: Testability` and `Rule:` verbatim from the rule headings below.
 
 **Routing rules (do not double-file):**
 

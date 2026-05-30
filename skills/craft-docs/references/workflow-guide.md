@@ -4,9 +4,9 @@ Full procedural workflow for the hybrid craft documentation strategy.
 
 **RULE:** Curated docs declare intent. Generated docs recover observed design and grade craft alignment in fixed order: Architecture → SOLID → Clean Code → Testability. Source code is the only proof.
 
-**CONSTRAINT [HARD]:** Analysis order is fixed. A finding produced by an earlier pass shadows any candidate finding for the same code location in a later pass — do not double-file. Each aspect file cross-references the others to enforce this.
+**CONSTRAINT [HARD-FORMAT]:** Analysis order is fixed. A finding produced by an earlier pass shadows any candidate finding for the same code location in a later pass — do not double-file. Each aspect file cross-references the others to enforce this.
 
-**CONSTRAINT [HARD]:** All findings use the **Critical / Major / Minor** layout defined in `references/output-format.md`. No other priority scheme.
+**CONSTRAINT [HARD-FORMAT]:** All findings use the **Critical / Major / Minor** layout defined in `references/output-format.md`. No other priority scheme.
 
 ---
 

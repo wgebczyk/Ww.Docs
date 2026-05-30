@@ -2,14 +2,12 @@
 name: sec-docs
 description: >
   Use this skill when the user asks to generate or refresh security compliance docs,
-  run security analysis, analyze ASVS, check security compliance, update security docs,
-  or invokes /sec-docs. Multi-repository variant: the workspace contains the docs
-  repo at its root and one or more sibling code repos checked out as first-level
-  child directories (docs live OUTSIDE the documented repos). Use sec-docs-mini
-  instead when scanning a single repository where docs live INSIDE the repo
-  (docs/sec-docs/ alongside the code). Performs OWASP ASVS v5 security analysis
-  category by category and maintains structured compliance documentation in
-  docs/sec-docs/. Works for any number of repositories and any technology stack.
+  run security analysis, analyze ASVS, check OWASP compliance, update security docs,
+  or invokes /sec-docs. Performs OWASP ASVS v5 security analysis category by category.
+  Multi-repository variant: the workspace is a docs repo with one or more sibling code
+  repos checked out as first-level child directories (docs live OUTSIDE the documented
+  repos). Use sec-docs-mini instead when scanning a single repository where docs live
+  INSIDE the repo (docs/sec-docs/ alongside the code).
 allowed-tools:
   - Read
   - Write
