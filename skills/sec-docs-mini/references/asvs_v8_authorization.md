@@ -8,8 +8,6 @@ output-file: "asvs_v8_authorization.md"
 
 # V8: Authorization
 
-ASVS v5 reference — load this file when analysing category V8.
-
 ## Requirements
 
 ### V8.1 — Authorization Documentation

@@ -8,8 +8,6 @@ output-file: "asvs_v10_oauth_oidc.md"
 
 # V10: OAuth and OIDC
 
-ASVS v5 reference — load this file when analysing category V10.
-
 ## Requirements
 
 ### V10.1 — OAuth Client Security

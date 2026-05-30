@@ -8,8 +8,6 @@ output-file: "asvs_v17_webrtc.md"
 
 # V17: WebRTC
 
-ASVS v5 reference — load this file when analysing category V17.
-
 ## Requirements
 
 ### V17.1 — TURN Server

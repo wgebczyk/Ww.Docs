@@ -8,8 +8,6 @@ output-file: "asvs_v2_validation_business_logic.md"
 
 # V2: Validation and Business Logic
 
-ASVS v5 reference — load this file when analysing category V2.
-
 ## Requirements
 
 ### V2.1 — Input Validation Documentation

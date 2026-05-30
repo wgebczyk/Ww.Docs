@@ -8,8 +8,6 @@ output-file: "asvs_v16_security_logging.md"
 
 # V16: Security Logging and Error Handling
 
-ASVS v5 reference — load this file when analysing category V16.
-
 ## Requirements
 
 ### V16.1 — Logging Documentation

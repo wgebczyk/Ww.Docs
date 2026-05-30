@@ -8,8 +8,6 @@ output-file: "asvs_v7_session_management.md"
 
 # V7: Session Management
 
-ASVS v5 reference — load this file when analysing category V7.
-
 ## Requirements
 
 ### V7.1 — Session Management Documentation
