@@ -8,8 +8,6 @@ output-file: "asvs_v15_secure_coding.md"
 
 # V15: Secure Coding and Architecture
 
-ASVS v5 reference — load this file when analysing category V15.
-
 ## Requirements
 
 ### V15.1 — Secure Coding Documentation

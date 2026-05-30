@@ -8,8 +8,6 @@ output-file: "asvs_v11_cryptography.md"
 
 # V11: Cryptography
 
-ASVS v5 reference — load this file when analysing category V11.
-
 ## Requirements
 
 ### V11.1 — Cryptographic Inventory and Policy

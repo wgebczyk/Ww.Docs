@@ -8,8 +8,6 @@ output-file: "asvs_v6_authentication.md"
 
 # V6: Authentication
 
-ASVS v5 reference — load this file when analysing category V6.
-
 ## Requirements
 
 ### V6.1 — Authentication Documentation

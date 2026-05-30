@@ -10,6 +10,7 @@
 
     Exposes:
       New-Finding         — build a finding hashtable (with optional console output)
+      Assert-NoElevatedRoles — abort if the signed-in identity has active write roles
       Get-GraphToken      — obtain a Microsoft Graph token via Azure CLI
       Invoke-Graph        — single Graph REST call (returns parsed object or $null)
       Invoke-GraphOdata   — Graph OData call that returns the .value array
@@ -28,9 +29,10 @@
         throwing. Callers must still guard against $null with ?. / ?? / @().
 #>
 
-$script:GraphBase   = "https://graph.microsoft.com/v1.0"
-$script:GraphToken  = $null
-$script:GuidPattern = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+$script:GraphBase        = "https://graph.microsoft.com/v1.0"
+$script:GraphToken       = $null
+$script:ElevationChecked = $false
+$script:GuidPattern      = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
 
 function Get-GraphBaseUrl { return $script:GraphBase }
 
@@ -126,8 +128,82 @@ function New-Finding {
     return $finding
 }
 
+function Assert-NoElevatedRoles {
+    <#
+    .SYNOPSIS
+        Safety gate run once before any token is minted. Verifies the signed-in
+        identity has no *active* write-capable role assignment (Owner, Contributor,
+        *Administrator, *Write).
+
+    .DESCRIPTION
+        Designed for PIM setups where elevated roles are Eligible (inactive) and
+        only Reader is permanently active. Eligible-but-unactivated PIM roles do
+        NOT appear in `az role assignment list`, so a clean result confirms the
+        session is effectively running at Reader scope.
+
+        NOTE: this checks *Azure resource* role assignments (the write surface that
+        matters for the resource audit). Entra ID directory roles are a separate
+        PIM system; deactivate any elevated directory roles too before auditing.
+
+        If an active write-capable role is found, the function throws to abort the
+        read-only audit. Set env var SECDOCS_ALLOW_ELEVATED=1 to downgrade the hard
+        stop to a warning (use only when elevated access is intentional).
+
+        Service principals / managed identities (CI) without a resolvable identity
+        are skipped with a warning rather than blocked.
+    #>
+    [CmdletBinding()]
+    param()
+
+    if ($script:ElevationChecked) { return }
+    $script:ElevationChecked = $true
+
+    $privilegedPatterns = 'Owner', 'Contributor', 'Administrator', 'Write'
+    $upn = $null
+    $assignments = @()
+
+    try {
+        $upn = az ad signed-in-user show --query userPrincipalName -o tsv 2>$null
+        if (-not $upn) { $upn = az account show --query user.name -o tsv 2>$null }
+        if ($upn) {
+            $json = az role assignment list --assignee $upn --all --output json 2>$null
+            if ($json) { $assignments = $json | ConvertFrom-Json -ErrorAction Stop }
+        }
+    } catch {
+        Write-Warning "Elevation check could not query role assignments: $($_.Exception.Message)"
+        return
+    }
+
+    if (-not $upn) {
+        Write-Warning "Elevation check skipped: could not determine signed-in identity."
+        return
+    }
+
+    $elevated = @($assignments | Where-Object {
+        $n = $_.roleDefinitionName
+        $n -and ($privilegedPatterns | Where-Object { $n -like "*$_*" })
+    })
+
+    if ($elevated.Count -eq 0) {
+        Write-Host "[+] Elevation check passed for '$upn' — no active write-capable roles (Reader scope)." -ForegroundColor Green
+        return
+    }
+
+    $list = ($elevated | ForEach-Object { "  - $($_.roleDefinitionName)  @ $($_.scope)" }) -join "`n"
+    $msg = "Active elevated role assignment(s) detected for '$upn':`n$list`n`n" +
+           "The sec-docs audit is read-only and is meant to run at Reader scope.`n" +
+           "If you activated a PIM role (Contributor/Owner/Admin), deactivate it before auditing."
+
+    if ($env:SECDOCS_ALLOW_ELEVATED -eq '1') {
+        Write-Warning "$msg`n(SECDOCS_ALLOW_ELEVATED=1 set — proceeding anyway.)"
+        return
+    }
+    throw "$msg`n`nSet SECDOCS_ALLOW_ELEVATED=1 to override this safety check."
+}
+
 function Get-GraphToken {
     if ($script:GraphToken) { return $script:GraphToken }
+    Assert-NoElevatedRoles
     try {
         $tokenJson = az account get-access-token --resource https://graph.microsoft.com --output json 2>$null
         if ($tokenJson) {
@@ -210,6 +286,7 @@ function Get-CodeRoles {
 
 Export-ModuleMember -Function `
     New-Finding,
+    Assert-NoElevatedRoles,
     Get-GraphToken,
     Invoke-Graph,
     Invoke-GraphOdata,

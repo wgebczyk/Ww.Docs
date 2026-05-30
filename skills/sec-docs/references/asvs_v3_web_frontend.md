@@ -8,8 +8,6 @@ output-file: "asvs_v3_web_frontend.md"
 
 # V3: Web Frontend Security
 
-ASVS v5 reference — load this file when analysing category V3.
-
 ## Requirements
 
 ### V3.1 — Browser Security Documentation

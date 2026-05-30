@@ -8,8 +8,6 @@ output-file: "asvs_v4_api_web_service.md"
 
 # V4: API and Web Service
 
-ASVS v5 reference — load this file when analysing category V4.
-
 ## Requirements
 
 ### V4.1 — Generic Web Service Security

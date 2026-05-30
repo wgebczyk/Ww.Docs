@@ -8,8 +8,6 @@ output-file: "asvs_v13_configuration.md"
 
 # V13: Configuration
 
-ASVS v5 reference — load this file when analysing category V13.
-
 ## Requirements
 
 ### V13.1 — Communication and Dependency Documentation

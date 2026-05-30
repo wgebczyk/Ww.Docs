@@ -8,8 +8,6 @@ output-file: "asvs_v12_secure_communication.md"
 
 # V12: Secure Communication
 
-ASVS v5 reference — load this file when analysing category V12.
-
 ## Requirements
 
 ### V12.1 — TLS Configuration

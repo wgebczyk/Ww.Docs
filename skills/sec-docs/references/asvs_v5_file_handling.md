@@ -8,8 +8,6 @@ output-file: "asvs_v5_file_handling.md"
 
 # V5: File Handling
 
-ASVS v5 reference — load this file when analysing category V5.
-
 ## Requirements
 
 ### V5.1 — File Upload Documentation

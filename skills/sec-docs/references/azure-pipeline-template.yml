@@ -98,7 +98,7 @@ steps:
 # or environment, run /sec-docs locally to refresh the manifest, then commit the
 # updated orchestrator.
 #
-# Utility scripts under .claude/skills/sec-docs/references/entraid/ are part of
+# Utility scripts under .github/skills/sec-docs/references/entraid/ are part of
 # the skill definition and must not be edited by hand.
 
 - task: AzureCLI@2
@@ -130,7 +130,7 @@ steps:
   displayName: "Install GitHub Copilot CLI"
 
 - script: |
-    git config user.email "sec-docs@company.com"
+    git config user.email "sec-docs@volvo.com"
     git config user.name "Sec Docs Bot"
   workingDirectory: $(Pipeline.Workspace)/s/$(docsRepo)
   displayName: "Configure git author"

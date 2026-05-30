@@ -8,8 +8,6 @@ output-file: "asvs_v14_data_protection.md"
 
 # V14: Data Protection
 
-ASVS v5 reference — load this file when analysing category V14.
-
 ## Requirements
 
 ### V14.1 — Data Classification

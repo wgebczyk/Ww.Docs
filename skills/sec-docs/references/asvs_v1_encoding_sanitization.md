@@ -8,8 +8,6 @@ output-file: "asvs_v1_encoding_sanitization.md"
 
 # V1: Encoding and Sanitization
 
-ASVS v5 reference — load this file when analysing category V1.
-
 ## Requirements
 
 ### V1.1 — Input Decoding and Canonicalization

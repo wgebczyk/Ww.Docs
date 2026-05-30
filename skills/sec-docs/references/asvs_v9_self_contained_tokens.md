@@ -8,8 +8,6 @@ output-file: "asvs_v9_self_contained_tokens.md"
 
 # V9: Self-contained Tokens
 
-ASVS v5 reference — load this file when analysing category V9.
-
 ## Requirements
 
 ### V9.1 — Token Validation
