@@ -24,6 +24,10 @@ docs/sec-docs/reports/deps/                            ← skill-managed (per pr
 
 ## Manifest — Two Lists
 
+In single-repo mode `Unit` distinguishes solutions/workspaces inside the same
+repository (typically the parent directory name of the solution or workspace
+file).
+
 **DotnetSolutions:** `@{ Unit; SolutionPath; DisplayName }`
 `SolutionPath` is relative to the repo root (e.g. `src\MyApi\MyApi.slnx`).
 

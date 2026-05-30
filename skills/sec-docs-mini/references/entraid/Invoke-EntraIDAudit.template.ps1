@@ -26,7 +26,6 @@
 [CmdletBinding()]
 param(
     [string]$OutputDir = $PSScriptRoot,
-    [string[]]$RepoRoots = @(),
     [switch]$SkipPublicChecks,
     [switch]$SkipConditionalAccess
 )
@@ -35,7 +34,7 @@ $ErrorActionPreference = "Stop"
 
 # === MANIFEST BEGIN === (skill-managed; do not hand-edit between these markers)
 
-# Tenant GUID. Replaced by the sec-docs skill on first generation.
+# Tenant GUID. Replaced by the sec-docs-mini skill on first generation.
 $TenantId = "{{TENANT_ID}}"
 
 # Deployable units and their app registrations.
@@ -112,7 +111,7 @@ foreach ($app in @($Applications)) {
         TenantId    = $TenantId
         Environment = if ($app.Environment) { $app.Environment } else { "Unknown" }
         Unit        = if ($app.Unit)        { $app.Unit }        else { "" }
-        RepoRoots   = $RepoRoots
+        RepoRoots   = @($RepoRoot)
     }
     $appOutput = & $appScript @appArgs
     foreach ($f in @($appOutput)) {
@@ -128,6 +127,6 @@ $writerScript = Join-Path $UtilDir "Write-EntraIDAuditReport.ps1"
     -Applications $Applications `
     -TenantId     $TenantId `
     -OutputDir    $OutputDir `
-    -ScannedRoots $RepoRoots
+    -ScannedRoots @($RepoRoot)
 
 Write-Host "`nDone." -ForegroundColor Cyan

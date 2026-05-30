@@ -46,7 +46,9 @@ whether `docs/sec-docs/reports/{integration}/{integration}-audit-latest.json`
 is newer than `last-scan`.
 
 If no repo has new commits **and** no curated docs changed **and** no new audit
-results: update `last-scan` only and report "No changes detected."
+results: update `last-scan` only and report "No changes detected." Do not
+advance any repo's `last-commit-hash` — those hashes only roll forward when
+their repo had changes that triggered re-assessment.
 
 ## Step 5 — Map changes to ASVS categories
 
@@ -171,6 +173,7 @@ Edit `docs/sec-docs/index.md` YAML frontmatter:
 - Update the per-category status counts in the index table from the updated
   category pages' `status-summary` frontmatter.
 - Update the OWASP Top 10 row counts if the Top 10 report was regenerated.
+- Update the Audit Status row(s) if any audit JSON was refreshed.
 
 ## Step 10 — Write run log entry
 

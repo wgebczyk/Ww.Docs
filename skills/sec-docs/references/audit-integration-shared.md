@@ -67,7 +67,9 @@ the JSON will already exist.
 
 In an **interactive run**:
 - If `docs/sec-docs/reports/{integration}/{integration}-audit-latest.json` exists
-  and is ≤ 7 days older than the oldest repo HEAD timestamp, read it directly.
+  and its modification time is within 7 days of the most recent HEAD commit
+  timestamp across the discovered repos (i.e., not stale by more than a week),
+  read it directly.
 - Otherwise instruct the user to run the orchestrator (see the integration's doc
   for the exact command line).
 - If the user declines, mark every ASVS requirement listed in the integration's

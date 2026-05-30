@@ -3,9 +3,13 @@ name: sec-docs
 description: >
   Use this skill when the user asks to generate or refresh security compliance docs,
   run security analysis, analyze ASVS, check security compliance, update security docs,
-  or invokes /sec-docs. Performs OWASP ASVS v5 security analysis category by category
-  and maintains structured compliance documentation in docs/sec-docs/. Works
-  for any number of repositories and any technology stack.
+  or invokes /sec-docs. Multi-repository variant: the workspace contains the docs
+  repo at its root and one or more sibling code repos checked out as first-level
+  child directories (docs live OUTSIDE the documented repos). Use sec-docs-mini
+  instead when scanning a single repository where docs live INSIDE the repo
+  (docs/sec-docs/ alongside the code). Performs OWASP ASVS v5 security analysis
+  category by category and maintains structured compliance documentation in
+  docs/sec-docs/. Works for any number of repositories and any technology stack.
 allowed-tools:
   - readFile
   - createFile
@@ -165,12 +169,10 @@ Only these paths are writable:
 accepted risks, compensating controls). All other paths are read-only. If a write would
 target any other path, stop and report the violation.
 
-`docs/sec-docs/reports/entraid/` is written by the Entra ID audit script, not by the
-skill. The skill reads this directory — never writes to it.
-
-`docs/sec-docs/reports/headers/`, `docs/sec-docs/reports/tls/`,
-`docs/sec-docs/reports/azure/`, and `docs/sec-docs/reports/deps/` are likewise written
-by their respective audit scripts. The skill reads these directories — never writes to them.
+Within `docs/sec-docs/reports/{integration}/`: the skill may write **only** the
+orchestrator file `Invoke-*.ps1` (creates it on first run; updates only the manifest
+block on subsequent runs). All other files in that directory — JSON and Markdown
+audit output — are written by the audit script, not by the skill.
 
 ## Citation Rules
 
@@ -250,11 +252,11 @@ For **Init** runs:
 - PASS: {N} | FAIL: {N} | PARTIAL: {N} | N/A: {N} | NOT-ASSESSED: {N}
 - Curated files incorporated: {N}
 - Top 10 items covered: {N}/10
-- Entra ID audit: {run/not-run} | PASS: {N} FAIL: {N} WARN: {N}
-- Headers audit: {run/not-run} | PASS: {N} FAIL: {N} WARN: {N}
-- TLS audit: {run/not-run} | PASS: {N} FAIL: {N} WARN: {N}
-- Azure audit: {run/not-run} | PASS: {N} FAIL: {N} WARN: {N}
-- Deps audit: {run/not-run} | PASS: {N} FAIL: {N} WARN: {N}
+- Entra ID audit: {run/not-run/not-applicable} | PASS: {N} FAIL: {N} WARN: {N}
+- Headers audit: {run/not-run/not-applicable} | PASS: {N} FAIL: {N} WARN: {N}
+- TLS audit: {run/not-run/not-applicable} | PASS: {N} FAIL: {N} WARN: {N}
+- Azure audit: {run/not-run/not-applicable} | PASS: {N} FAIL: {N} WARN: {N}
+- Deps audit: {run/not-run/not-applicable} | PASS: {N} FAIL: {N} WARN: {N}
 ```
 
 For **Incremental** runs:
@@ -315,11 +317,11 @@ Run these checks before reporting completion.
 
 **Write Safety**
 - [ ] No write targeted `docs/sec-docs/curated/`
-- [ ] No write targeted `docs/sec-docs/reports/entraid/`
-- [ ] No write targeted `docs/sec-docs/reports/headers/`
-- [ ] No write targeted `docs/sec-docs/reports/tls/`
-- [ ] No write targeted `docs/sec-docs/reports/azure/`
-- [ ] No write targeted `docs/sec-docs/reports/deps/`
+- [ ] No write targeted `docs/sec-docs/reports/entraid/` except `Invoke-EntraIDAudit.ps1`
+- [ ] No write targeted `docs/sec-docs/reports/headers/` except `Invoke-HttpHeadersAudit.ps1`
+- [ ] No write targeted `docs/sec-docs/reports/tls/` except `Invoke-TlsAudit.ps1`
+- [ ] No write targeted `docs/sec-docs/reports/azure/` except `Invoke-AzureResourceAudit.ps1`
+- [ ] No write targeted `docs/sec-docs/reports/deps/` except `Invoke-DependencyAudit.ps1`
 - [ ] `docs/sec-docs/log.md` has a new entry for this run
 
 For Incremental runs, also check:

@@ -32,8 +32,10 @@ subsequent run.
 
 Create `docs/sec-docs/`, `docs/sec-docs/pages/`, and `docs/sec-docs/curated/`
 if absent. Do not write content into `docs/sec-docs/curated/` — that directory
-is human-owned and read-only. The `docs/sec-docs/reports/{integration}/`
-directories are created by their audit scripts, not by the skill.
+is human-owned and read-only. The skill also creates each
+`docs/sec-docs/reports/{integration}/` directory on first run when it writes
+that integration's orchestrator (`Invoke-*.ps1`); the audit JSON/Markdown
+output inside those directories is written by the audit script, not by the skill.
 
 ```powershell
 New-Item -ItemType Directory -Force -Path "docs/sec-docs"

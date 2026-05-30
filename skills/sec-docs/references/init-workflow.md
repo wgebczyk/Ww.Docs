@@ -29,8 +29,10 @@ subsequent run.
 
 Create `docs/sec-docs/`, `docs/sec-docs/pages/`, and `docs/sec-docs/curated/`
 if absent. Do not write content into `docs/sec-docs/curated/` — that directory
-is human-owned and read-only. The `docs/sec-docs/reports/{integration}/`
-directories are created by their audit scripts, not by the skill.
+is human-owned and read-only. The skill also creates each
+`docs/sec-docs/reports/{integration}/` directory on first run when it writes
+that integration's orchestrator (`Invoke-*.ps1`); the audit JSON/Markdown
+output inside those directories is written by the audit script, not by the skill.
 
 ```powershell
 New-Item -ItemType Directory -Force -Path "docs/sec-docs"
@@ -112,6 +114,10 @@ In a **pipeline run** the orchestrators have already run; the audit JSON files
 exist. In an **interactive run**, follow the freshness logic in
 `audit-integration-shared.md` (Phase 4) and instruct the user accordingly. If
 the user declines, mark affected requirements `NOT-ASSESSED`.
+
+If an integration finds no targets to audit (no app registrations / no base
+URLs / no Key Vaults / no solutions), note it as "not applicable" in the run
+log and skip its ASVS mapping.
 
 ## Step 7 — Read curated docs
 
@@ -227,10 +233,10 @@ repositories:
 ---
 ```
 
-**Body:** Full category table, OWASP Top 10 row, and overall posture summary as
-shown in the index template in `references/category-page-template.md`. Pull
-per-category counts from the `status-summary` frontmatter of each written
-category page.
+**Body:** Full category table, OWASP Top 10 row, Audit Status table, and overall
+posture summary as shown in the index template in
+`references/category-page-template.md`. Pull per-category counts from the
+`status-summary` frontmatter of each written category page.
 
 ## Step 11 — Write run log entry
 
