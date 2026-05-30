@@ -14,7 +14,7 @@ category mapping.
 | `docs/sec-docs/reports/{integration}/Invoke-*.ps1` | Skill-managed orchestrator (manifest block only) | Yes — edit between markers only |
 | `docs/sec-docs/reports/{integration}/{integration}-audit-latest.{json,md}` | Audit script output | Read only; never write |
 
-**CONSTRAINT [HARD]:** Never write to anything under `references/{integration}/`.
+**CONSTRAINT [HARD-WRITE]:** Never write to anything under `references/{integration}/`.
 If a check is missing or wrong, fix the skill definition in a separate change.
 
 ## Orchestrator Step — Four Phases

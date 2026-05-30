@@ -4,7 +4,7 @@ Full procedural detail for Incremental mode. Run when `docs/sec-docs/index.md`
 exists and `--init` was not passed.
 
 This is the **single-repository** variant: there is no multi-repo discovery —
-the workspace is the repo root.
+the current working directory is the repo root.
 
 The workflow is **change-driven**: it begins from the git delta, maps changes
 to affected ASVS categories using heuristics, and re-assesses only impacted
@@ -25,16 +25,21 @@ category ID and topic name (same as Init Step 6).
 
 ## Step 3 — Detect codebase changes
 
+Because the docs live inside the repo, every prior run produced commits under
+`docs/sec-docs/` (and committing those is how `last-commit-hash` advances).
+Counting them as "code changes" would re-trigger analysis on every run, so they
+must be excluded. Curated docs also live under `docs/sec-docs/`, but they are
+human-authored intent and *must* still drive re-assessment when they change —
+so a separate query captures them explicitly.
+
 Collect changes since the last scan with two targeted git queries (both run
 against the repo root):
 
-- **Code changes:**
+- **Code changes** (everything *except* skill-generated output and curated docs):
   `git log {last-commit-hash}..HEAD --name-only --format= -- ':!docs/sec-docs/'`
-  (excludes all skill-generated output under `docs/sec-docs/`)
-- **Curated changes:**
+- **Curated changes** (re-included explicitly because Step's first query excluded
+  the whole `docs/sec-docs/` subtree):
   `git log {last-commit-hash}..HEAD --name-only --format= -- 'docs/sec-docs/curated/'`
-  (curated files live inside `docs/sec-docs/` so the first query excludes them;
-  this one captures them explicitly)
 
 If `{last-commit-hash}` is no longer in history (after rebase/force-push), fall
 back to full re-analysis.

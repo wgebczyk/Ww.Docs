@@ -27,7 +27,7 @@ is demonstrably absent from the entire codebase.
 - Source citations are repo-relative: `(source: path/to/file.ext)` or
   `(source: path/to/file.ext:Lstart-Lend)` for localized findings.
 - Contradictions: `[CONFLICT: path/file-a.cs says X; path/file-b.ts says Y]`.
-- **CONSTRAINT [HARD]:** Never make unsourced PASS or FAIL claims.
+- **CONSTRAINT [HARD-EVIDENCE]:** Never make unsourced PASS or FAIL claims.
 
 ---
 

@@ -57,8 +57,10 @@ Scan **only the first-level (direct) child directories** of the workspace root f
 a `.git/` subdirectory. Do not recurse into deeper levels, and do not inspect the
 workspace root's own parent. Repositories that sit *next to* the docs repo (siblings
 under its parent folder) are unrelated and must be excluded — only repos checked out
-*inside* the docs workspace count. This matches the pipeline layout, where each repo
-is placed directly inside the docs workspace (`s/$(docsRepo)/{REPO_NAME}`).
+*inside* the docs workspace count. This matches the Azure Pipelines layout, where
+each repo resource is checked out into a sibling folder under
+`$(Pipeline.Workspace)/s/$(docsRepoName)/{REPO_NAME}`, making the repos first-level
+children of the docs workspace.
 
 ```powershell
 # PowerShell — direct children of the workspace root only
@@ -276,5 +278,5 @@ Use targeted searches rather than reading entire repositories. Prefer:
    output code) can contribute to a PASS verdict when combined with positive
    evidence of safe alternatives.
 
-**CONSTRAINT [HARD]:** Record the specific file path and relevant line range in
+**CONSTRAINT [HARD-EVIDENCE]:** Record the specific file path and relevant line range in
 every Evidence bullet. Do not assert PASS or FAIL without a concrete source reference.

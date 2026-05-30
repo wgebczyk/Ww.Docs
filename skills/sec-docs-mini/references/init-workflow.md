@@ -246,5 +246,5 @@ Use targeted searches rather than reading entire directories. Prefer:
    output code) can contribute to a PASS verdict when combined with positive
    evidence of safe alternatives.
 
-**CONSTRAINT [HARD]:** Record the specific file path and relevant line range in
+**CONSTRAINT [HARD-EVIDENCE]:** Record the specific file path and relevant line range in
 every Evidence bullet. Do not assert PASS or FAIL without a concrete source reference.

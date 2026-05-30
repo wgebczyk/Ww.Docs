@@ -39,7 +39,11 @@ It does not walk up to the parent folder, and it does not enumerate sibling repo
 
 **RULE:** Curated docs declare intent and accepted risks. Generated docs surface observed compliance per ASVS v5. Source code is the only proof — never assert a compliance status without verified code evidence.
 
-**CONSTRAINT [HARD]:** Every requirement status must be supported by at least one source citation — file path and line range when localized. A requirement without code evidence must be marked `NOT-ASSESSED`, not inferred.
+Constraints in this skill are tagged by category:
+- `[HARD-EVIDENCE]` — source-citation and verification rules; a violation produces an unfounded compliance verdict.
+- `[HARD-WRITE]` — output and file-write policy; a violation corrupts or overwrites human-owned or append-only artefacts.
+
+**CONSTRAINT [HARD-EVIDENCE]:** Every requirement status must be supported by at least one source citation — file path and line range when localized. A requirement without code evidence must be marked `NOT-ASSESSED`, not inferred.
 
 ## Analysis Order
 
@@ -161,7 +165,7 @@ Determine mode before any other work. Flags take precedence over file-state dete
 | `--init` | Force Init mode. If `index.md` already exists, report which pages will be overwritten before proceeding. |
 | `--update` | Force Incremental mode. |
 | `--category V6,V11` | Restrict analysis to the specified comma-separated category IDs, regardless of mode. |
-| `--all` | In Incremental mode, re-analyse all 17 categories regardless of what changed (bypass change-to-category mapping). Use when you suspect cross-cutting impact or want a full posture refresh without re-running Init. |
+| `--all` | In Incremental mode, re-analyse all 17 categories regardless of what changed (bypass change-to-category mapping). Use when you suspect cross-cutting impact or want a full posture refresh. Unlike `--init`, `--all` preserves the existing run log and the index's baseline commit hash, and refreshes pages in place; use `--init` only when rebuilding the documentation set from scratch. |
 
 ## Write Constraint
 
@@ -197,7 +201,7 @@ If two sources contradict each other, write both citations and flag the conflict
 [CONFLICT: path/file-a.cs says X; path/file-b.ts says Y]
 ```
 
-**CONSTRAINT [HARD]:** Never assert PASS, FAIL, or PARTIAL without a source citation.
+**CONSTRAINT [HARD-EVIDENCE]:** Never assert PASS, FAIL, or PARTIAL without a source citation.
 Requirements with no verifiable code evidence must be `NOT-ASSESSED`.
 
 ## Curated Docs Integration
@@ -233,7 +237,7 @@ When answering analysis prompts with this skill:
 7. Call out drift between curated intent and code, accepted risks, and suggested doc or
    code updates.
 
-**CONSTRAINT [HARD]:** Source code verification is mandatory before any PASS, FAIL, or
+**CONSTRAINT [HARD-EVIDENCE]:** Source code verification is mandatory before any PASS, FAIL, or
 PARTIAL verdict. Never propagate a status from curated or generated docs without
 confirming against current code.
 
@@ -281,7 +285,7 @@ For **Incremental** runs:
 - Deps audit: {incorporated new results/no new results}
 ```
 
-**CONSTRAINT [HARD]:** Never rewrite or truncate `log.md` — only append. Do not embed
+**CONSTRAINT [HARD-WRITE]:** Never rewrite or truncate `log.md` — only append. Do not embed
 this history in `index.md` or any category page.
 
 ## Verification Checklist

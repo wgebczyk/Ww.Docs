@@ -58,7 +58,7 @@ while ($dir -and -not (Test-Path (Join-Path $dir.FullName ".github"))) {
 }
 if (-not $dir) {
     throw "Could not locate the repo root (no .github folder above $PSScriptRoot). " +
-          "This orchestrator must live under a checkout of the docs workspace."
+          "This orchestrator must live under a checkout of the repository."
 }
 $RepoRoot = $dir.FullName
 $UtilDir  = Join-Path $RepoRoot ".github" "skills" "sec-docs-mini" "references" "entraid"
