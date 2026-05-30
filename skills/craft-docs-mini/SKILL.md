@@ -11,14 +11,12 @@ description: >
   Architecture → SOLID → Clean Code → Testability; source code proves actual
   behavior and structure.
 allowed-tools:
-  - readFile
-  - createFile
-  - writeFile
-  - search
-  - fileSearch
-  - 'shell:git'
-  - 'shell:Get-ChildItem'
-  - 'shell:New-Item'
+  - Read
+  - Write
+  - Edit
+  - Glob
+  - Grep
+  - Bash
 ---
 
 # CraftDocs-Mini Skill
@@ -216,50 +214,9 @@ history in `index.md` or any wiki page.
 
 ## Verification Checklist
 
-Run these checks before reporting completion.
-
-**Structure and Metadata**
-- [ ] `docs/craft-docs/index.md` exists and has valid metadata
-- [ ] Every link in `index.md` resolves to an existing file
-- [ ] Every generated page has required sections from the template
-- [ ] Every generated page includes `generated-on`, `generated-from-commit`,
-      `generated-from-branch`, `architecture-style`, `source-paths-analyzed`,
-      `related-curated-docs`, `related-adrs`, `known-gaps`, `confidence`, `source-repos`
-- [ ] `last-commit-hash` in `index.md` matches `git log -1 --format=%H`
-- [ ] Each module's `architecture-style` corresponds to the architecture file
-      that was loaded for analysis
-
-**Findings Quality**
-- [ ] Every finding uses the per-finding structure from
-      `references/output-format.md`
-- [ ] Every finding has Aspect, Rule, Where (with file/line), Evidence,
-      Suggested refactor, Effort, First detected
-- [ ] Findings are grouped Critical → Major → Minor; within each priority
-      ordered by aspect (Architecture → SOLID → CleanCode → Testability)
-- [ ] No "high/medium/low" or numeric scoring appears anywhere in output
-- [ ] No finding is filed in two aspects — the earliest aspect in the
-      analysis order owns each finding
-- [ ] `docs/craft-docs/reports/architecture-findings.md`,
-      `solid-findings.md`, `clean-code-findings.md`,
-      `testability-findings.md` each exist and either list findings or state
-      none found
-
-**Other Reports**
-- [ ] `docs/craft-docs/reports/design-drift.md` exists
-- [ ] `docs/craft-docs/reports/refactor-candidates.md` exists and is
-      prioritized (Critical first)
-- [ ] `docs/craft-docs/reports/latest-refresh-summary.md` exists
-- [ ] `docs/craft-docs/log.md` has a new entry for this run
-
-**Naming**
-- [ ] Every module page slug follows `{module-name}` lowercase kebab with
-      de-duplication applied
-
-For Update runs, also check:
-- [ ] New `last-scan` timestamp is later than previous
-- [ ] Only affected module/design pages have updated `generated-on`
-- [ ] Resolved findings are removed from active reports (history stays in log)
-- [ ] `First detected` is preserved on findings that persist
+Before reporting completion, run every check in
+`references/verification-checklist.md`. The checklist covers Structure and Metadata,
+Findings Quality, Other Reports, Naming, and Update-only checks.
 
 ## Init Workflow
 
@@ -280,6 +237,7 @@ Load these as needed — they are not in context by default:
 | `references/workflow-guide.md` | Full procedural detail for either mode |
 | `references/module-heuristics.md` | Identifying modules or design topics |
 | `references/output-format.md` | Writing any finding or finding-containing report |
+| `references/verification-checklist.md` | Verifying completion at end of run |
 | `references/aspects/architecture.md` | Architecture pass + style detection |
 | `references/aspects/solid.md` | SOLID pass |
 | `references/aspects/clean-code.md` | Clean Code pass |
