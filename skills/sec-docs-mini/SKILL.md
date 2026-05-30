@@ -12,14 +12,12 @@ description: >
   analysis category by category and maintains structured compliance documentation in
   docs/sec-docs/. Works for any technology stack.
 allowed-tools:
-  - readFile
-  - createFile
-  - writeFile
-  - search
-  - fileSearch
-  - 'shell:git'
-  - 'shell:Get-ChildItem'
-  - 'shell:New-Item'
+  - Read
+  - Write
+  - Edit
+  - Glob
+  - Grep
+  - Bash
 ---
 
 # SecDocs-Mini Skill
@@ -87,65 +85,22 @@ Generate one cross-cutting report mapping findings to the OWASP Top 10 2025 afte
 |---|---|---|
 | OWASP Top 10 2025 | `references/owasp_top10_2025.md` | `pages/asvs_top10_owasp.md` |
 
-## Entra ID Audit Integration
+## Audit Integrations
 
-Audits Entra ID (Azure AD) app registrations and tenant policies via Microsoft Graph.
-Evidence feeds V6, V7, V8, V9, V10, V11, V13. Run the orchestrator step once per
-invocation, before any of those categories.
+Five orchestrator-driven audits feed ASVS categories with external evidence. Run each
+orchestrator once per invocation **before** any category it feeds.
 
-**Load `references/entraid/audit-integration.md`** for full details: architecture,
-unit discovery, orchestrator phases 1–4, manifest format, JSON schema, and ASVS
-category mapping.
+| Integration | Feeds categories | Reference |
+|---|---|---|
+| Entra ID app registrations and tenant policies (Microsoft Graph) | V6, V7, V8, V9, V10, V11, V13 | `references/entraid/audit-integration.md` |
+| HTTP security response headers | V3, V12 (redirect), V13 | `references/headers/audit-integration.md` |
+| TLS handshake and certificate posture | V11 (cert key size), V12 | `references/tls/audit-integration.md` |
+| Azure Key Vault and App Configuration (ARM + Azure CLI) | V11 (key sizes), V13 | `references/azure/audit-integration.md` |
+| Dependency vulnerabilities (`dotnet list package --vulnerable`, `npm audit`) | V15 | `references/deps/audit-integration.md` |
 
----
-
-## HTTP Security Headers Audit Integration
-
-Probes each deployable unit's base URL for HTTP security response headers.
-Evidence feeds V3, V12 (redirect), V13. Run the orchestrator step once per
-invocation before those categories.
-
-**Load `references/headers/audit-integration.md`** for full details: architecture,
-URL discovery, orchestrator phases 1–4, manifest format, JSON schema, and ASVS
-category mapping.
-
----
-
-## TLS Audit Integration
-
-Performs TLS handshakes against each deployable endpoint to assess protocol and
-certificate posture. Evidence feeds V11 (cert key size), V12.
-Run the orchestrator step once per invocation before those categories.
-
-**Load `references/tls/audit-integration.md`** for full details: architecture,
-hostname discovery, orchestrator phases 1–4, manifest format, JSON schema, ASVS
-category mapping, and the downgrade-testing limitation note.
-
----
-
-## Azure Resource Audit Integration
-
-Audits Azure Key Vault and App Configuration stores via ARM REST API and Azure CLI.
-Evidence feeds V11 (key sizes), V13. Run the orchestrator step once per invocation
-before those categories.
-
-**Load `references/azure/audit-integration.md`** for full details: architecture,
-Key Vault and App Config discovery, orchestrator phases 1–4, dual-manifest format,
-JSON schema, and ASVS category mapping.
-
----
-
-## Dependency Vulnerability Audit Integration
-
-Runs `dotnet list package --vulnerable` and `npm audit` across all solution and
-workspace roots discovered in the repo. Evidence feeds V15. Run the orchestrator
-step once per invocation before that category.
-
-**Load `references/deps/audit-integration.md`** for full details: architecture,
-.NET solution and npm workspace discovery, orchestrator phases 1–4, manifest format,
-JSON schema, and ASVS category mapping.
-
----
+Load `references/audit-integration-shared.md` once for the shared 4-phase pattern,
+manifest format, JSON schema, and citation form. Then load each integration's
+reference file when running that orchestrator step.
 
 ## Mode Detection
 
@@ -244,99 +199,18 @@ confirming against current code.
 ## Run Log
 
 At the **end of every run** (after all pages are written, before the Verification
-Checklist), append one entry to `docs/sec-docs/log.md`. Create the file with a header
-if it does not yet exist:
-
-```markdown
-# SecDocs-Mini Run Log
-
-<!-- append-only: one entry per run, newest last -->
-```
-
-For **Init** runs:
-```markdown
-## {ISO-8601 UTC timestamp} — Init
-- Categories documented: {N}
-- Requirements assessed: {N}
-- PASS: {N} | FAIL: {N} | PARTIAL: {N} | N/A: {N} | NOT-ASSESSED: {N}
-- Curated files incorporated: {N}
-- Top 10 items covered: {N}/10
-- Entra ID audit: {run/not-run/not-applicable} | PASS: {N} FAIL: {N} WARN: {N}
-- Headers audit: {run/not-run/not-applicable} | PASS: {N} FAIL: {N} WARN: {N}
-- TLS audit: {run/not-run/not-applicable} | PASS: {N} FAIL: {N} WARN: {N}
-- Azure audit: {run/not-run/not-applicable} | PASS: {N} FAIL: {N} WARN: {N}
-- Deps audit: {run/not-run/not-applicable} | PASS: {N} FAIL: {N} WARN: {N}
-```
-
-For **Incremental** runs:
-```markdown
-## {ISO-8601 UTC timestamp} — Incremental
-- Categories updated: {N} (by change mapping: {N}, by extension: {N})
-- Requirements re-assessed: {N} (out of {total})
-- Requirements preserved: {N}
-- PASS: {N} | FAIL: {N} | PARTIAL: {N} | N/A: {N} | NOT-ASSESSED: {N}
-- Status changes: {N} (list: V#.#.#: old → new, ...)
-- Curated files incorporated: {N}
-- Top 10 report regenerated: yes/no
-- Entra ID audit: {incorporated new results/no new results}
-- Headers audit: {incorporated new results/no new results}
-- TLS audit: {incorporated new results/no new results}
-- Azure audit: {incorporated new results/no new results}
-- Deps audit: {incorporated new results/no new results}
-```
+Checklist), append one entry to `docs/sec-docs/log.md`. Load
+`references/run-log-format.md` for the file header, the Init template, and the
+Incremental template.
 
 **CONSTRAINT [HARD-WRITE]:** Never rewrite or truncate `log.md` — only append. Do not embed
 this history in `index.md` or any category page.
 
 ## Verification Checklist
 
-Run these checks before reporting completion.
-
-**Structure and Metadata**
-- [ ] `docs/sec-docs/index.md` exists and has valid YAML frontmatter with `last-scan`,
-      `asvs-version`, and `last-commit-hash`
-- [ ] Every link in `index.md` body resolves to a file that exists on disk
-- [ ] Every category page has valid YAML frontmatter with `category-id`, `last-updated`,
-      and `status-summary`
-- [ ] Every category page has: Summary, Technology Context, and one section per requirement
-- [ ] Every requirement section has: Level badge, Status badge, Requirement text,
-      Findings, Evidence
-- [ ] `docs/sec-docs/pages/asvs_top10_owasp.md` exists and contains a section for each
-      of the 10 OWASP Top 10 2025 items
-- [ ] Each Top 10 section has: Description, ASVS cross-references, Status, Findings,
-      Evidence
-- [ ] `last-commit-hash` in `index.md` matches `git log -1 --format=%H`
-
-**Evidence Quality**
-- [ ] Every PASS, FAIL, or PARTIAL verdict has at least one `(source: ...)` citation
-- [ ] Every `docs/sec-docs/curated/` file is cited in at least one category page
-- [ ] If `docs/sec-docs/reports/entraid/entraid-audit-latest.json` exists: at least one
-      Entra ID finding is cited in V6, V7, V8, V9, V10, V11, or V13 category pages
-- [ ] If `docs/sec-docs/reports/headers/headers-audit-latest.json` exists: at least one
-      Headers finding is cited in V3 or V13 category pages
-- [ ] If `docs/sec-docs/reports/tls/tls-audit-latest.json` exists: at least one TLS
-      finding is cited in V11 or V12 category pages
-- [ ] If `docs/sec-docs/reports/azure/azure-audit-latest.json` exists: at least one
-      Azure finding is cited in V11 or V13 category pages
-- [ ] If `docs/sec-docs/reports/deps/deps-audit-latest.json` exists: at least one
-      Deps finding is cited in V15 category pages
-- [ ] No requirement is marked PASS without a verifiable code reference
-
-**Write Safety**
-- [ ] No write targeted `docs/sec-docs/curated/`
-- [ ] No write targeted `docs/sec-docs/reports/entraid/` except `Invoke-EntraIDAudit.ps1`
-- [ ] No write targeted `docs/sec-docs/reports/headers/` except `Invoke-HttpHeadersAudit.ps1`
-- [ ] No write targeted `docs/sec-docs/reports/tls/` except `Invoke-TlsAudit.ps1`
-- [ ] No write targeted `docs/sec-docs/reports/azure/` except `Invoke-AzureResourceAudit.ps1`
-- [ ] No write targeted `docs/sec-docs/reports/deps/` except `Invoke-DependencyAudit.ps1`
-- [ ] `docs/sec-docs/log.md` has a new entry for this run
-
-For Incremental runs, also check:
-- [ ] New `last-scan` timestamp is later than the previous one
-- [ ] Only pages for re-analysed categories have an updated `last-updated` frontmatter field
-- [ ] Within updated pages, only impacted requirements have refreshed evidence (unless
-      scope extension was triggered — document the extension reason in the log)
-- [ ] Unchanged requirements within updated pages preserve their previous status and evidence verbatim
+Before reporting completion, run every check in
+`references/verification-checklist.md`. The checklist covers Structure and Metadata,
+Evidence Quality, Write Safety, and Incremental-only checks.
 
 ## Init Workflow
 
@@ -355,6 +229,8 @@ Load these as needed — they are not in context by default:
 | `references/init-workflow.md` | Starting Init mode (full procedural detail) |
 | `references/update-workflow.md` | Starting Incremental (Update) mode (full procedural detail) |
 | `references/category-page-template.md` | Writing or updating any category page or the Top 10 report |
+| `references/run-log-format.md` | Writing the run log entry at end of run |
+| `references/verification-checklist.md` | Verifying completion at end of run |
 | `references/owasp_top10_2025.md` | Generating `docs/sec-docs/pages/asvs_top10_owasp.md` |
 | `references/audit-integration-shared.md` | Before running any orchestrator step (shared 4-phase pattern, manifest rules, JSON schema, citation form) |
 | `references/entraid/audit-integration.md` | Running the Entra ID orchestrator step |
